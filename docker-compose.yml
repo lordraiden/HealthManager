@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: bloodwork-tracker
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+      - ./bloodwork.db:/app/bloodwork.db
+      - ./backups:/app/backups
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=sqlite:////app/bloodwork.db
+      - AI_PROVIDER=mock
+      - AI_SEND_TO_CLOUD=false
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    restart: unless-stopped
+    networks:
+      - bloodwork-network
+    security_opt:
+      - no-new-privileges:true
+
+  # Optional: Uncomment to use Ollama locally
+  # ollama:
+  #   image: ollama/ollama
+  #   container_name: ollama-service
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama_data:/root/.ollama
+  #   networks:
+  #     - bloodwork-network
+  #   restart: unless-stopped
+
+networks:
+  bloodwork-network:
+    driver: bridge
+
+volumes:
+  ollama_data:
