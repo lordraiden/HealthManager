@@ -56,10 +56,19 @@ class FHIRMapper:
         name_entry = fhir_patient.get("name", [{}])[0] if fhir_patient.get("name") else {}
         name = name_entry.get("text") or name_entry.get("family", "") + " " + name_entry.get("given", [""])[0]
         
+        birth_date = None
+        if fhir_patient.get("birthDate"):
+            birth_date_str = fhir_patient["birthDate"]
+            # Handle both date formats (YYYY-MM-DD and YYYY-MM-DDTHH:MM:SS)
+            if 'T' in birth_date_str:
+                birth_date = datetime.fromisoformat(birth_date_str.replace('Z', '+00:00')).date()
+            else:
+                birth_date = datetime.strptime(birth_date_str, "%Y-%m-%d").date()
+        
         patient = Patient(
             name=name.strip() or "Unknown Patient",
             gender=fhir_patient.get("gender"),
-            birth_date=datetime.fromisoformat(fhir_patient["birthDate"]) if fhir_patient.get("birthDate") else None,
+            birth_date=birth_date,
             notes=fhir_patient.get("note", [{}])[0].get("text") if fhir_patient.get("note") else None
         )
         

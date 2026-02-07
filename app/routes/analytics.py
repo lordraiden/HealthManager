@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
-from app.models import Patient, Observation, Biomarker, LOINCCode
+from app.models import Patient, Observation, Biomarker, LOINCCode, TestReport
 from app.schemas import TrendQuery, TrendResponse, TrendDataPoint
 from app import db
 from datetime import datetime, timedelta
