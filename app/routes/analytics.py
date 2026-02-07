@@ -44,7 +44,7 @@ def get_trends():
             return jsonify({'error': 'Biomarker not found'}), 404
         
         # Calculate date range based on period
-        end_date = datetime.utcnow()
+        end_date = datetime.now()
         start_date = end_date
         
         if period == '1m':

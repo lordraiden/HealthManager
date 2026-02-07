@@ -76,7 +76,8 @@ def update_patient(patient_id):
         for field, value in patient_update.dict(exclude_unset=True).items():
             setattr(patient, field, value)
         
-        patient.updated_at = datetime.utcnow()
+        patient.updated_at = datetime.now()
+        
         db.session.commit()
         
         return jsonify(PatientResponse.from_orm(patient).dict()), 200
@@ -97,7 +98,8 @@ def patch_patient(patient_id):
         for field, value in patient_update.dict(exclude_unset=True).items():
             setattr(patient, field, value)
         
-        patient.updated_at = datetime.utcnow()
+        patient.updated_at = datetime.now()
+        
         db.session.commit()
         
         return jsonify(PatientResponse.from_orm(patient).dict()), 200
