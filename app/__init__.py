@@ -10,6 +10,9 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     
+    # Set instance path to handle read-only filesystems like Vercel
+    app.instance_path = Config.INSTANCE_PATH
+    
     db.init_app(app)
     jwt.init_app(app)
     
