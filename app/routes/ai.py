@@ -85,7 +85,7 @@ def ai_consult():
         ai_response = AIConsultResponse(
             response=response,
             provider_used=provider.get_name(),
-            timestamp=datetime.utcnow()
+            timestamp=datetime.now()
         )
         
         return jsonify(ai_response.dict()), 200

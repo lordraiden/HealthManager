@@ -30,7 +30,7 @@ def login():
         
         if user and check_password_hash(user.password_hash, login_request.password):
             # Update last login
-            user.last_login = datetime.utcnow()
+            user.last_login = datetime.now()
             db.session.commit()
             
             access_token = create_access_token(identity=user.id)

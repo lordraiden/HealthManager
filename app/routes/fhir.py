@@ -568,7 +568,7 @@ def post_bundle():
                 if not report:
                     report = TestReport(
                         patient_id=patient.id,
-                        effective_datetime=datetime.utcnow(),
+                        effective_datetime=datetime.now(),
                         status="final",
                         category="laboratory"
                     )

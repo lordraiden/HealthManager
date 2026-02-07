@@ -13,8 +13,8 @@ class Patient(db.Model):
     birth_date = Column(Date)
     gender = Column(String(10))
     notes = Column(Text)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime)
     
     # Relaciones
     reports = relationship("TestReport", back_populates="patient")
@@ -169,7 +169,7 @@ class User(db.Model):
     password_hash = Column(String, nullable=False)
     email = Column(String, unique=True)
     role = Column(String, default="user")  # admin, user
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now)
     last_login = Column(DateTime)
 
     def __init__(self, username, password_hash, email=None, role="user"):
