@@ -1,1 +1,46 @@
-Nothing should be ignored based on the provided file changes. The modification of 'app.py' represents a source code file change, which does not require any new ignore rules. The current .gitignore is empty and there are no build artifacts, dependencies, or temporary files in the changes to warrant adding ignore patterns.
+```
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Database
+instance/*.db
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Dependencies
+venv/
+.venv/
+.env/
+
+# Logs
+*.log
+
+# Coverage
+.coverage
+coverage/
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+build/
+dist/
+target/
+.mypy_cache/
+.pytest_cache/
+```
