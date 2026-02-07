@@ -41,6 +41,10 @@ def create_app():
     from app.routes.ai import bp as ai_bp
     app.register_blueprint(ai_bp)
     
+    # Register settings blueprint
+    from app.routes.settings import bp as settings_bp
+    app.register_blueprint(settings_bp)
+    
     # Health check endpoint
     @app.route('/health')
     def health():
