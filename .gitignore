@@ -1,1 +1,24 @@
-(empty)
+```
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.ENV
+.ENV.local
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+
+# Build/dist
+build/
+dist/
+*.egg-info/
+```
