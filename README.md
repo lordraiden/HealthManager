@@ -1,67 +1,119 @@
 # Blood Work Tracker
 
-## 📋 Descripción
-Aplicación web local para gestión integral de resultados analíticos y documentos clínicos con capacidades de IA híbrida (local/cloud) y soporte HL7 FHIR.
+## 📋 Description
+Local web application for comprehensive management of laboratory results and clinical documents with hybrid AI capabilities (local/cloud) and HL7 FHIR support.
 
-## 🎯 Características Principales
-- ✅ Gestión de perfiles de pacientes (máx. 4)
-- ✅ Almacenamiento local de PDFs y documentos
-- ✅ Interoperabilidad HL7 FHIR completa
-- ✅ IA local y cloud configurable
-- ✅ Visualización de tendencias y análisis
-- ✅ Sistema de alertas inteligente
-- ✅ Backup y restauración automática
-- ✅ Dockerización completa
+## 🎯 Key Features
+- ✅ Patient profile management (up to 4 profiles)
+- ✅ Local storage of PDFs and documents
+- ✅ Complete HL7 FHIR interoperability
+- ✅ Configurable local and cloud AI
+- ✅ Trend visualization and analytics
+- ✅ Smart alert system
+- ✅ Automatic backup and restoration
+- ✅ Full containerization with Docker
 
-## 🚀 Instalación
+## 🚀 Installation
 
-### Requisitos
+### Requirements
 - Python 3.10+
-- Docker (opcional)
+- Docker and Docker Compose (optional but recommended)
+- At least 4GB RAM for optimal performance
+- 2GB free disk space minimum
 
-### Instalación Local
+### Local Installation
 ```bash
 git clone <repo>
 cd bloodwork-tracker
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
-# Editar .env con tus configuraciones
+# Edit .env with your configurations
 python run.py
 ```
 
-### Docker
+### Docker Installation (Recommended)
+The easiest way to run Blood Work Tracker is using Docker Compose. This ensures all dependencies are properly configured and isolated.
+
+First, ensure you have Docker and Docker Compose installed:
 ```bash
-docker-compose up -d
-# Acceder a http://localhost:5000
+# Check if Docker is installed
+docker --version
+# Check if Docker Compose is installed
+docker-compose --version
 ```
 
-## 📖 Uso
+Then run the application:
+```bash
+# Clone the repository
+git clone <repo>
+cd bloodwork-tracker
 
-### Configuración Inicial
-1. Crear primer usuario admin (por defecto: admin/admin123)
-2. Configurar proveedor IA en .env
-3. Importar códigos LOINC/UCUM (opcional)
+# Copy the example environment file
+cp .env.example .env
 
-### Gestión de Pacientes
-- Crear/Editar/Eliminar perfiles
-- Asignar biomarcadores con códigos LOINC
-- Establecer rangos de referencia
+# Edit the .env file to configure your settings
+nano .env  # or use your preferred editor
 
-### Importación de Analíticas
-- Subir PDFs de laboratorio
-- Crear observaciones manualmente
-- Importar Bundle FHIR
+# Start the services using Docker Compose
+docker-compose up -d
 
-### Visualización
-- Gráficos de tendencias por biomarcador
-- Comparación entre informes
-- Alertas de valores fuera de rango
+# View logs to ensure everything started correctly
+docker-compose logs -f
+
+# Access the application at http://localhost:5000
+```
+
+### Docker Compose Configuration
+The default `docker-compose.yml` includes:
+- Main application service
+- PostgreSQL database (for persistent data storage)
+- Optional services for AI integration (when configured)
+
+To customize your deployment, modify the `.env` file before starting the containers. The application will automatically initialize the database and create the necessary tables on first startup.
+
+### Stopping and Managing Services
+```bash
+# Stop the services
+docker-compose down
+
+# Stop and remove volumes (removes all data)
+docker-compose down -v
+
+# View service logs
+docker-compose logs -f
+
+# View specific service logs
+docker-compose logs -f app  # for the main application
+docker-compose logs -f db   # for the database
+```
+
+## 📖 Usage
+
+### Initial Setup
+1. Create first admin user (default: admin/admin123)
+2. Configure AI provider in .env
+3. Import LOINC/UCUM codes (optional)
+
+### Patient Management
+- Create/Edit/Delete profiles
+- Assign biomarkers with LOINC codes
+- Set reference ranges
+
+### Analytics Import
+- Upload laboratory PDFs
+- Create observations manually
+- Import FHIR Bundle
+
+### Visualization
+- Trend charts by biomarker
+- Report comparison
+- Out-of-range value alerts
 
 ## 🔌 API Reference
 
-### Autenticación
+### Authentication
 ```bash
 POST /api/v1/auth/login
 {
@@ -78,22 +130,22 @@ GET /fhir/DiagnosticReport?patient={id}
 GET /fhir/Bundle?patient={id}
 ```
 
-### IA Consultation
+### AI Consultation
 ```bash
 POST /api/v1/ai/consult
 {
-  "question": "¿Cómo han evolucionado mis niveles de glucosa?",
+  "question": "How have my glucose levels evolved?",
   "provider": "local",
   "context_type": "fhir_bundle",
   "patient_id": 1
 }
 ```
 
-## 🔐 Seguridad
-- JWT para autenticación
-- AES-256 para encriptación en reposo
-- RBAC para control de acceso
-- Audit trail completo
+## 🔐 Security
+- JWT for authentication
+- AES-256 for encryption at rest
+- RBAC for access control
+- Complete audit trail
 
 ## 🧪 Testing
 ```bash
@@ -103,23 +155,23 @@ pytest tests/ -v --cov=app
 ## 📊 FHIR Mapping
 
 ### Patient ↔ FHIR Patient
-| Campo DB | FHIR Field | Tipo |
-|----------|-----------|------|
+| DB Field | FHIR Field | Type |
+|----------|------------|------|
 | id | resource.id | string |
 | name | name[0].text | string |
 | birth_date | birthDate | date |
 | gender | gender | code |
 
 ### Observation ↔ FHIR Observation
-| Campo DB | FHIR Field | Tipo |
-|----------|-----------|------|
+| DB Field | FHIR Field | Type |
+|----------|------------|------|
 | value | valueQuantity.value | decimal |
 | unit | valueQuantity.unit | string |
 | ref_min | referenceRange[0].low.value | decimal |
 | ref_max | referenceRange[0].high.value | decimal |
 | interpretation | interpretation[0].coding[0].code | code |
 
-## 🤖 Configuración IA
+## 🤖 AI Configuration
 
 ### Local (Ollama)
 ```env
@@ -138,24 +190,36 @@ LMSTUDIO_BASE_URL=http://localhost:1234
 ```env
 AI_PROVIDER=openai
 AI_SEND_TO_CLOUD=true
-OPENAI_API_KEY=tu-api-key
+OPENAI_API_KEY=your-api-key
 ```
 
-### Simulación (por defecto)
+### Simulation (default)
 ```env
 AI_PROVIDER=mock
 AI_SEND_TO_CLOUD=false
 ```
 
 ## 🐳 Docker
+For detailed Docker installation and management instructions, see the Installation section above.
+
+Basic Docker Compose commands:
 ```bash
+# Start all services in detached mode
 docker-compose up -d
+
+# Stop all services
 docker-compose down
+
+# View logs from all services
 docker-compose logs -f
+
+# View logs from specific service
+docker-compose logs -f app  # for the main application
+docker-compose logs -f db   # for the database
 ```
 
-## 📝 Licencia
+## 📝 License
 MIT License
 
 ## ⚠️ Disclaimer
-Esta aplicación NO proporciona diagnósticos médicos. Solo ofrece resúmenes y orientaciones informativas. Consulte siempre con un profesional de la salud.
+This application does NOT provide medical diagnoses. It only offers informative summaries and guidance. Always consult with a healthcare professional.
