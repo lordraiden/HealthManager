@@ -1,4 +1,5 @@
-from app import create_app, db
+from app import create_app
+from app.models import db
 from app.models import Patient, User
 from app.routes.auth import init_default_user
 from config import Config

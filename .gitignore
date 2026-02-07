@@ -1,1 +1,1 @@
-(empty)
+Nothing should be ignored based on the provided file changes. The modified files (`run.py` and `vercel.json`) are source/config files and do not represent build artifacts, dependencies, or temporary files that should be ignored.
