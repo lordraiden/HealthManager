@@ -69,6 +69,10 @@ class FHIRMapper:
             name=name.strip() or "Unknown Patient",
             gender=fhir_patient.get("gender"),
             birth_date=birth_date,
+        patient = Patient(
+            name=name.strip() or "Unknown Patient",
+            gender=fhir_patient.get("gender"),
+            birth_date=datetime.fromisoformat(fhir_patient["birthDate"]) if fhir_patient.get("birthDate") else None,
             notes=fhir_patient.get("note", [{}])[0].get("text") if fhir_patient.get("note") else None
         )
         

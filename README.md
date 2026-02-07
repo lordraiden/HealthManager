@@ -113,6 +113,10 @@ POST /fhir/Bundle  # Import complete patient data
 # Search LOINC/UCUM
 GET /api/v1/codes/loinc?search={term}
 GET /api/v1/codes/ucum?search={term}
+GET /fhir/Patient/{id}
+GET /fhir/Observation?patient={id}
+GET /fhir/DiagnosticReport?patient={id}
+GET /fhir/Bundle?patient={id}
 ```
 
 ### IA Consultation
@@ -147,6 +151,10 @@ pytest tests/test_ai_integration.py -v
 
 # Coverage
 pytest tests/ -v --cov=app --cov-report=html
+
+## 🧪 Testing
+```bash
+pytest tests/ -v --cov=app
 ```
 
 ## 📊 FHIR Mapping
@@ -353,6 +361,11 @@ bloodwork-tracker/
 - Migraciones de base de datos
 - Documentación del cambio
 - Pruebas de regresión
+
+docker-compose up -d
+docker-compose down
+docker-compose logs -f
+```
 
 ## 📝 Licencia
 MIT License
