@@ -42,3 +42,6 @@ class Config:
     
     # Maximum number of patient profiles allowed
     MAX_PATIENT_PROFILES = 4
+    
+    # Instance path configuration for read-only filesystems like Vercel
+    INSTANCE_PATH = os.environ.get('INSTANCE_PATH') or '/tmp/instance'
