@@ -1,10 +1,9 @@
-from app import create_app
+from app import create_app, db
 
 app = create_app()
 
 # Create database tables if they don't exist
 with app.app_context():
-    from app import db
     from app.models import Patient, User
     from app.routes.auth import init_default_user
     db.create_all()
