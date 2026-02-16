@@ -20,6 +20,19 @@ bp = Blueprint('auth', __name__, url_prefix='/api/v1/auth')
 blacklisted_tokens = set()
 
 
+def _validate_password_strength(password):
+    """
+    Validate password strength requirements.
+    
+    Args:
+        password (str): Password to validate
+        
+    Returns:
+        bool: True if password meets requirements, False otherwise
+    """
+    return len(password) >= 6
+
+
 @bp.route('/login', methods=['POST'])
 def login():
     try:
@@ -80,7 +93,7 @@ def change_password():
     if not check_password_hash(user.password_hash, old_password):
         return jsonify({'error': 'Old password is incorrect'}), 400
     
-    if len(new_password) < 6:
+    if not _validate_password_strength(new_password):
         return jsonify({'error': 'New password must be at least 6 characters'}), 400
     
     user.password_hash = generate_password_hash(new_password)

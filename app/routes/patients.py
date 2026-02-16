@@ -9,6 +9,23 @@ from config import Config
 bp = Blueprint('patients', __name__, url_prefix='/api/v1/patients')
 
 
+def _delete_patient_related_records(patient_id):
+    """
+    Delete all related records for a patient to satisfy foreign key constraints.
+    
+    Args:
+        patient_id (int): ID of the patient whose related records should be deleted
+    """
+    # Delete medical documents
+    MedicalDocument.query.filter_by(patient_id=patient_id).delete()
+    
+    # Delete observations
+    Observation.query.filter_by(patient_id=patient_id).delete()
+    
+    # Delete test reports
+    TestReport.query.filter_by(patient_id=patient_id).delete()
+
+
 @bp.route('', methods=['GET'])
 @jwt_required()
 def get_patients():
@@ -114,14 +131,7 @@ def delete_patient(patient_id):
     patient = Patient.query.get_or_404(patient_id)
     
     # Delete related records first due to foreign key constraints
-    # Delete medical documents
-    MedicalDocument.query.filter_by(patient_id=patient_id).delete()
-    
-    # Delete observations
-    Observation.query.filter_by(patient_id=patient_id).delete()
-    
-    # Delete test reports
-    TestReport.query.filter_by(patient_id=patient_id).delete()
+    _delete_patient_related_records(patient_id)
     
     # Finally delete the patient
     db.session.delete(patient)
